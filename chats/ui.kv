@@ -1,0 +1,416 @@
+<Message>
+    md_bg_color:[.96,.96,.96,1]
+    size_hint:.35,None
+    elevation:1
+    height:self.minimum_height
+    MDBoxLayout:
+        orientation:'vertical'
+        size_hint:1,None
+        height:self.minimum_height
+        padding:20
+        spacing:10
+        MDLabel:
+            text:root.login
+            adaptive_height:True
+        MDLabel:
+            text:root.msg
+            adaptive_height:True
+
+
+<AddContent>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height + 25
+    spacing: 25
+    padding: 40
+
+    MDTextField:
+        id: dl_name
+        mode: 'rectangle'
+        text: root.name_f
+        hint_text: 'Название'
+        max_text_length: 16
+
+    MDTextField:
+        id: dl_desc
+        mode: 'rectangle'
+        text: root.desc_f
+        hint_text: 'Описание'
+        max_text_length: 36
+
+    MDBoxLayout:
+        height: 50
+        size_hint: 1, None
+        spacing: 10
+        padding: 10
+
+        MDCheckbox:
+            id: dl_active
+            active: root.active_f
+            size_hint: None, 1
+            active: False
+            width: 50
+
+        MDLabel:
+            text: 'Активность'
+            size_hint:  None, 1
+
+
+
+
+
+    MDAnchorLayout:
+        height: 50
+        anchor_x: 'center'
+        anchor_y: 'center'
+
+        MDBoxLayout:
+            spacing: 10
+            size_hint: None,None
+            height: self.minimum_height
+            width: self.minimum_width
+            padding: [0,40,0,20]
+
+            MDRectangleFlatIconButton:
+                text: 'Изменить' if root.edit else 'Добавить'
+                theme_style:'Custom'
+                md_bg_color:self.theme_cls.primary_color
+                text_color:'white'
+                icon_color:'white'
+                icon:'plus-box' if root. edit else 'pencil-box'
+                on_press:
+                    if root.edit: app.edit_row(dl_name.text, dl_desc.text, int(dl_active.active), root.current)
+                    else: app.add_row(dl_name.text, dl_desc.text, int(dl_active.active))
+
+
+
+            MDRectangleFlatIconButton:
+                text:'Отмена'
+                theme_style:'Custom'
+                md_bg_color:self.theme_cls.primary_color
+                text_color:'white'
+                icon_color:'white'
+                icon:'close'
+                on_press:
+                    if root.edit: app.dialog_e.dismiss()
+                    else: app.dialog.dismiss()
+
+
+
+
+
+<CSnackbar>:
+    MDIcon:
+        icon: root.icon
+        theme_text_color: 'Custom'
+        text_color: root.color
+        pos_hint:{'center_y':.5}
+
+    MDLabel:
+        text: root.text
+        theme_text_color: 'Custom'
+        text_color: [1,1,1,1]
+        pos_hint:{'center_y':.5}
+
+
+MDScreenManager:
+    id: sm_auth
+    MDScreen:
+        name:'chat'
+        MDTopAppBar:
+            left_action_items: [['menu', lambda x: nav.set_state('open')]]
+            pos_hint: {'top': 1}
+        MDNavigationLayout:
+            MDScreenManager:
+                id: sm_main
+                on_current:
+                    if self.current =='chat_list': app.refresh_table(0)
+
+                MDScreen:
+                    name: 'chat_list'
+                    MDBoxLayout:
+                        padding: [20, 95, 20, 20]
+                        spacing: 10
+                        orientation: 'vertical'
+                        size_hint: 1, 1
+                        height: self.minimum_height
+                        MDBoxLayout:
+                            id: lt_table_chat
+                        MDAnchorLayout:
+                            size_hint: 1, None
+                            anchor_x: 'center'
+                            anchor_y: 'center'
+                            height: 50
+                            MDBoxLayout:
+                                size_hint:None, None
+                                spacing: 10
+                                width: self.minimum_width
+                                height: self.minimum_height
+
+
+                                MDRectangleFlatIconButton:
+                                    text:'Чат'
+                                    theme_style:'Custom'
+                                    md_bg_color:self.theme_cls.primary_color
+                                    text_color:'white'
+                                    icon_color:'white'
+                                    icon:'account-cowboy-hat'
+                                    on_press:
+                                        app.open_chat()
+
+                                MDRectangleFlatIconButton:
+                                    height: 50
+                                    size_hint_y: None
+                                    icon: 'plus-box'
+                                    text: 'Добавить'
+                                    theme_style: 'custom'
+                                    md_bg_color: app.theme_cls.primary_color
+                                    text_color: 'white'
+                                    icon_color: 'white'
+                                    on_press:
+                                        app.dialog.open()
+
+
+                                MDRectangleFlatIconButton:
+                                    text:'Изменить'
+                                    theme_style:'Custom'
+                                    md_bg_color:self.theme_cls.primary_color
+                                    text_color:'white'
+                                    icon_color:'white'
+                                    icon:'pencil-box'
+                                    on_press:
+                                        app.edit_row_dialog()
+
+                                MDRectangleFlatIconButton:
+                                    text:'Обновить'
+                                    theme_style:'Custom'
+                                    md_bg_color:self.theme_cls.primary_color
+                                    text_color:'white'
+                                    icon_color:'white'
+                                    icon:'database-sync'
+                                    on_press:
+                                        app.refresh_table()
+
+                                MDRectangleFlatIconButton:
+                                    icon_color: 'white'
+                                    theme_style: 'custom'
+                                    md_bg_color: app.theme_cls.primary_color
+                                    text_color: 'white'
+                                    height: 50
+                                    size_hint_y: None
+                                    icon: 'delete'
+                                    text: 'Удалить'
+                                    on_press:
+                                        app.del_row()
+
+                MDScreen:
+                    name: 'kuda'
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        padding: [0, 95, 0, 0]
+                        size_hint: 1, 1
+                        MDScrollView:
+                            id:msg_scroll
+                            size_hint:1,1
+                            MDBoxLayout:
+                                id:msg_box
+                                orientation: 'vertical'
+                                size_hint: 1, None
+                                height: self.minimum_height
+                                spacing:10
+                                padding:10
+
+                        MDBoxLayout:
+                            spacing:10
+                            padding:10
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            MDTextField:
+                                id:msg_text
+                                mode:"rectangle"
+
+                            MDIconButton:
+                                id:msg_btn
+                                size_hint:None,1
+                                icon_size:80
+                                icon:"send-circle"
+                                on_press:
+                                    app.msh_send(msg_text.text)
+                                    msg_text.text=''
+
+                MDScreen:
+                    name: 'profile'
+
+                    MDBoxLayout:
+                        spacing: 10
+                        orientation: 'vertical'
+                        pos_hint: {'top':1}
+                        padding: [20, 95, 20, 0]
+                        size_hint: 1, None
+                        height: self.minimum_height
+                        MDBoxLayout:
+                            size_hint: 1, None
+                            height: self.minimum_height
+
+                            MDLabel:
+                                id: pr_user
+                                text: 'Пользователь: ' + app.config.get("Session", "login")
+                        MDLabel:
+                            text: 'Смена пароля'
+                            size_hint_y: None
+                            height: 20
+                        MDTextField:
+                            id: pr_oldp
+                            mode: 'rectangle'
+                            hint_text: 'Текущий пароль'
+                            size_hint_y: None
+                        MDTextField:
+                            id: pr_newp
+                            mode: 'rectangle'
+                            hint_text: 'Новый пароль'
+                            size_hint_y: None
+                        MDTextField:
+                            id: pr_repp
+                            mode: 'rectangle'
+                            hint_text: 'Повторите пароль'
+                            size_hint_y: None
+                        MDAnchorLayout:
+                            anchor_x: 'right'
+                            anchor_y: 'top'
+                            size_hint_y: None
+
+                            MDRoundFlatIconButton:
+                                text: 'Применить'
+                                icon: 'pencil'
+                                on_press:
+                                    app.change_password(pr_oldp.text, pr_newp.text, pr_repp.text)
+
+                MDScreen:
+                    name: 'settings'
+        MDNavigationDrawer:
+            id: nav
+            radius: [0,0,0,0]
+            MDNavigationDrawerMenu:
+                MDNavigationDrawerHeader:
+                    title:'Чатик'
+                    text: 'Написаный ручками'
+                MDNavigationDrawerDivider:
+                MDNavigationDrawerItem:
+                    icon: 'account-cog'
+                    text: 'Профиль'
+                    on_press:
+                        sm_main.current = 'profile'
+                        nav.set_state('close')
+                MDNavigationDrawerItem:
+                    icon: 'forum'
+                    text: 'Чаты'
+                    on_press:
+                        sm_main.current = 'chat_list'
+
+                MDNavigationDrawerItem:
+                    icon: 'cog'
+                    text: 'Настройки'
+                    on_press:
+                        print('clock')
+
+                MDNavigationDrawerItem:
+                    icon: 'logout'
+                    text:'Выход'
+                    on_press:
+                        app.logout()
+                        nav.set_state('close')
+
+    MDScreen:
+        name:'login'
+        MDAnchorLayout:
+            anchor_y:'center'
+            anchor_x:'center'
+            MDBoxLayout:
+                orientation:'vertical'
+                padding:20
+                spacing:10
+                size_hint_x: .8
+                size_hint_y: None
+                height:self.minimum_height
+                MDTextField:
+                    id: lg_lg
+                    mode:'rectangle'
+                    hint_text:'Логин'
+                    max_text_length: 16
+                MDTextField:
+                    id: lg_ps
+                    mode:'rectangle'
+                    hint_text:'Пароль'
+                    password: True
+                    max_text_length: 36
+                MDAnchorLayout:
+                    size_hint_y:None
+                    anchor_x:'right'
+                    anchor_y:'top'
+                    MDBoxLayout:
+                        size_hint:None, None
+                        size: self.minimum_width,self.minimum_height
+                        spacing: 10
+                        MDRectangleFlatIconButton:
+                            icon: 'account-plus'
+                            text: 'Регистрация'
+                            on_press:
+                                sm_auth.current = 'register'
+                        MDRectangleFlatIconButton:
+                            icon: 'login'
+                            text:'войти'
+                            on_press:
+                                if lg_lg.error or lg_ps.error: app.add_notify('e', 'Проверьте заполнение!')
+                                else: app.login(lg_lg.text, lg_ps.text)
+
+    MDScreen:
+        name:'register'
+        MDAnchorLayout:
+            anchor_y:'center'
+            anchor_x:'center'
+            MDBoxLayout:
+                orientation:'vertical'
+                padding:20
+                spacing:10
+                size_hint_x: .8
+                size_hint_y: None
+                height:self.minimum_height
+                MDTextField:
+                    id: reg_lg
+                    mode:'rectangle'
+                    hint_text:'Логин'
+                    max_text_length: 16
+                MDTextField:
+                    id: reg_ps1
+                    mode:'rectangle'
+                    hint_text:'Придумайте пароль'
+                    password: True
+                    max_text_length: 36
+                MDTextField:
+                    id: reg_ps2
+                    mode:'rectangle'
+                    hint_text:'Повторите пароль'
+                    password: True
+                    max_text_length: 36
+                MDAnchorLayout:
+                    size_hint_y:None
+                    anchor_x:'right'
+                    anchor_y:'top'
+                    MDBoxLayout:
+                        size_hint:None, None
+                        size: self.minimum_width,self.minimum_height
+                        spacing: 10
+                        MDRectangleFlatIconButton:
+                            icon: 'account-plus'
+                            text: 'Отправить'
+                            on_press:
+                                if reg_lg.error or reg_ps1.error or reg_ps2.error: app.add_notify('e', 'Проверьте заполнение!')
+                                else: app.reg(reg_lg.text, reg_ps1.text, reg_ps2.text)
+
+
+                        MDRectangleFlatIconButton:
+                            icon: 'login'
+                            text:'Войти'
+                            on_press:
+                                sm_auth.current = 'login'
+
