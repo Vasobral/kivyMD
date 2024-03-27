@@ -1,0 +1,98 @@
+#<DSC>
+#    size_hint_y:None
+#    rows: 2
+#    size_hint_x:1
+#    height:self.minimum_height
+#    padding: 20
+#    spacing:10
+#    elevation:0
+
+
+
+MDBoxLayout:
+    orientation:'vertical'
+    MDTopAppBar:
+        title:'Вариант 6'
+        elevation:0
+        use_overflow:True
+        right_action_items:[['abacus', lambda x: app.switch_screen('main'),'Главный экран','Главный экран'],['cog', lambda x: app.switch_screen('settings'),'Настройки','Настройки']]
+    MDScreenManager:
+        id:sm
+        MDScreen:
+            name:"main"
+            MDBoxLayout:
+                orientation:'vertical'
+                pos_hint:{'top':1}
+                padding:[20,20,20,0]
+                spacing:8
+                size_hint:1,None
+                height: self.minimum_height
+                MDTextField:
+                    id:rm_h
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Высота стен'
+                MDTextField:
+                    id:rm_l
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Длина стен'
+                MDTextField:
+                    id:rm_w
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Ширина стен'
+                MDTextField:
+                    id:win_h
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Высота окна'
+                MDTextField:
+                    id:win_w
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Ширина окна'
+                MDTextField:
+                    id:dr_h
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Высота дверного проема'
+                MDTextField:
+                    id:dr_w
+                    mode:'rectangle'
+                    size_hint_y:None
+                    hint_text:'Ширина дверного проема'
+                MDAnchorLayout:
+                    anchor_x:'right'
+                    anchor_y:'top'
+                    size_hint_y:None
+                    MDRoundFlatIconButton:
+                        text: 'Посчитать'
+                        icon:'alarm-panel'
+                        on_press:
+                            app.cal(rm_h.text,rm_w.text,rm_l.text,win_w.text,win_h.text,dr_w.text,dr_h.text)
+
+
+
+        MDScreen:
+            name:'settings'
+            MDScrollView:
+                MDList:
+                    OneLineAvatarIconListItem:
+                        text:'Выбор цвета'
+                        IconLeftWidget:
+                            icon:'palette'
+                        IRightContainer:
+                            MDDropDownItem:
+                                id:drop_palette
+                                text: app.theme_cls.primary_palette
+                                on_press:app.drop_palette.open()
+                    OneLineAvatarIconListItem:
+                        text:'Выбор ед. имерения'
+                        IconLeftWidget:
+                            icon:'ballot-recount-outline'
+                        IRightContainer:
+                            MDDropDownItem:
+                                id:drop_hren
+                                text: app.config.get('App','hren')
+                                on_press:app.drop_hren.open()

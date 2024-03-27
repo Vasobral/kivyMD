@@ -1,0 +1,203 @@
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+
+
+
+MDBoxLayout:
+    orientation:'vertical'
+    MDTopAppBar:
+        title:'Вариант 10'
+        elevation:0
+        use_overflow:True
+
+        right_action_items:[['cog', lambda x: app.switch_screen('settings'),'Настройки','Настройки']]
+    MDScreenManager:
+        id:sm
+        MDScreen:
+            name:"first"
+            MDBoxLayout:
+                orientation:'vertical'
+                padding:20
+                spacing:40
+
+                MDTextField:
+                    id: text_f
+                    mode:'rectangle'
+                    hint_text:'элементы массива'
+                MDSlider:
+                    id:f_s
+                    min: 1
+                    max: 100
+                    value: 1
+                    color: "#702963"
+                    active:True
+
+                MDAnchorLayout:
+                    size_hint_y:None
+                    anchor_x:'right'
+                    anchor_y:'bottom'
+                    MDBoxLayout:
+                        size_hint:None, None
+                        size: self.minimum_width,self.minimum_height
+                        spacing: 10
+
+                        MDRectangleFlatIconButton:
+                            id:btn_f
+                            icon: 'account-plus'
+                            text: 'Создать'
+                            on_press:
+                                app.switch_screen('second')
+                        MDRectangleFlatIconButton:
+                            id:btn_c
+                            icon: 'account-plus'
+                            text: 'Очистить'
+                            on_press:
+                                app.switch_screen('second')
+
+
+
+        MDScreen:
+            name:"second"
+            MDBoxLayout:
+                orientation:'vertical'
+                padding:[180,0,0,0]
+                spacing:10
+                size_hint_x: 1
+
+
+                MDGridLayout:
+                    id:box
+                    rows:3
+                    height:self.minimum_height
+                    size_hint_x: .8
+                    size_hint_y: None
+                    spacing: "10dp"
+                    padding:[-70,0,0,130]
+
+                MDBoxLayout:
+                    orientation:'vertical'
+                    padding:[-100,0,75,0]
+                    spacing:40
+                    MDSlider:
+                        id:s_s
+                        min: 0
+                        max: 100
+                        value: 0
+                        color: "#702963"
+                        active:True
+                MDAnchorLayout:
+                    size_hint_y:None
+                    anchor_x:'right'
+                    anchor_y:'bottom'
+                    MDBoxLayout:
+                        size_hint:None, None
+                        size: self.minimum_width,self.minimum_height
+                        spacing: 10
+
+                        MDRectangleFlatIconButton:
+                            id:btn_neg
+                            icon: 'account-plus'
+                            text: 'Отрицательные'
+                            on_press:
+                                app.minus()
+                        MDRectangleFlatIconButton:
+                            id:btn_uneg
+                            icon: 'account-plus'
+                            text: 'Положительные'
+                            on_press:
+                                app.plus()
+                        MDRectangleFlatIconButton:
+                            id:btn_uneg
+                            icon: 'account-plus'
+                            text: 'Назад'
+                            on_press:
+                                app.switch_screen('first')
+
+        MDScreen:
+            name:'settings'
+            MDBoxLayout:
+                orientation:'vertical'
+                padding:[0,-260,0,300]
+                spacing:10
+                size_hint_x: 1
+                size_hint_y: .5
+                height:self.minimum_height
+                MDScrollView:
+                    MDList:
+                        OneLineAvatarIconListItem:
+                            text:'Тёмная тема'
+                            IconLeftWidget:
+                                icon:'palette'
+                            IRightContainer:
+                                Check:
+                                    id:dk
+                                    group: 'group'
+                                    size_hint: None, None
+                                    size: dp(48), dp(48)
+                                    pos_hint: {'center_x': .4, 'center_y': .5}
+                                    on_press:app.switch_theme('dk')
+
+                MDScrollView:
+                    MDList:
+                        OneLineAvatarIconListItem:
+                            text:'Светлая тема'
+                            IconLeftWidget:
+                                icon:'palette'
+                            IRightContainer:
+                                Check:
+                                    id:lt
+                                    active: True
+                                    group: 'group'
+                                    size_hint: None, None
+                                    size: dp(48), dp(48)
+                                    pos_hint: {'center_x': .4, 'center_y': .5}
+                                    on_press:app.switch_theme('lt')
+
+
+
+
+
+
+                MDScrollView:
+                    MDList:
+                        OneLineAvatarIconListItem:
+                            text:'Выбор цвета'
+                            IconLeftWidget:
+                                icon:'palette'
+                            IRightContainer:
+                                MDDropDownItem:
+                                    id:drop_palette
+                                    text: app.theme_cls.primary_palette
+                                    on_press:app.drop_palette.open()
+
+
+                MDSlider:
+                    id:v
+                    min: 1
+                    max: 10
+                    value: 1
+
+                    active:True
+                    on_touch_up:app.otenk(root.ids.v.value)
+
+            MDAnchorLayout:
+                size_hint_y:None
+                anchor_x:'right'
+                anchor_y:'bottom'
+                MDBoxLayout:
+                    size_hint:None, None
+                    size: self.minimum_width,self.minimum_height
+                    spacing: 10
+
+                    MDRectangleFlatIconButton:
+                        id:btn_neg
+                        icon: 'account-plus'
+                        text: 'Назад'
+                        on_press:
+                            app.switch_screen('second')
+
+
+

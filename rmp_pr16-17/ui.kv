@@ -1,0 +1,127 @@
+MDBoxLayout:
+    orientation:'vertical'
+
+    MDTopAppBar:
+        title:'Главное меню'
+        elevation:0
+        use_overflow:True
+#        right_action_items:[['home', lambda x: app.switch_screen('main'),'Главное меню','Главное меню'],['snake', lambda x: app.switch_screen('game'),'Игра','Игра'],['list-box', lambda x: app.switch_screen('resultati'),'resultati','resultati']]
+        right_action_items:[['baby-face', lambda x: app.Cheat(),'Читы','Читы'],['home', lambda x: app.switch_screen('main'),'Главное меню','Главное меню'],['snake', lambda x: app.switch_screen('game'),'Игра','Игра']]
+    MDScreenManager:
+        id:sm
+
+        MDScreen:
+            name:"main"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    size_hint:(.75,None)
+                    spacing:20
+                    MDLabel:
+                        id: bestTimeEver
+                        text: 'Лучшее время: '
+                    MDRectangleFlatButton:
+                        text:'Играц'
+                        size_hint_x:1
+                        on_press:app.switch_screen('game')
+#                    MDRectangleFlatButton:
+#                        text:'Результатики'
+#                        size_hint_x:1
+#                        on_press:app.switch_screen('resultati')
+
+
+        MDScreen:
+            name:'game'
+            MDBoxLayout:
+                orientation: 'horizontal'
+                pos: 170, 300
+                MDLabel:
+                    id: time
+                    text:''
+            MDBoxLayout:
+                orientation: 'vertical'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        Pole:
+                            padding: 50
+                            size_hint_y: None
+                            size_hint_x: None
+                            width: root.width
+                            height: self.width
+                            height: self.width
+                            cols: 4
+                            rows: 4
+                            MDRectangleFlatButton:
+                                id:m0
+                                size_hint:[1,1]
+                                text: '1'
+                            MDRectangleFlatButton:
+                                id:m1
+                                size_hint:[1,1]
+                                text: '2'
+                            MDRectangleFlatButton:
+                                id:m2
+                                size_hint:[1,1]
+                                text: '3'
+                            MDRectangleFlatButton:
+                                id:m3
+                                size_hint:[1,1]
+                                text: '4'
+                            MDRectangleFlatButton:
+                                id:m4
+                                size_hint:[1,1]
+                                text: '5'
+                            MDRectangleFlatButton:
+                                id:m5
+                                size_hint:[1,1]
+                                text: '6'
+                            MDRectangleFlatButton:
+                                id:m6
+                                size_hint:[1,1]
+                                text: '7'
+                            MDRectangleFlatButton:
+                                id:m7
+                                size_hint:[1,1]
+                                text: '8'
+                            MDRectangleFlatButton:
+                                id:m8
+                                size_hint:[1,1]
+                                text: '9'
+                            MDRectangleFlatButton:
+                                id:m9
+                                size_hint:[1,1]
+                                text: '10'
+                                text_color: "black"
+                            MDRectangleFlatButton:
+                                id:m10
+                                size_hint:[1,1]
+                                text: '11'
+                            MDRectangleFlatButton:
+                                id:m11
+                                size_hint:[1,1]
+                                text: '12'
+                            MDRectangleFlatButton:
+                                id:m12
+                                size_hint:[1,1]
+                                text: '13'
+                            MDRectangleFlatButton:
+                                id:m13
+                                size_hint:[1,1]
+                                text: '14'
+                            MDRectangleFlatButton:
+                                id:m14
+                                size_hint:[1,1]
+                                text: '15'
+                            MDRectangleFlatButton:
+                                id:m15
+                                size_hint:[1,1]
+                                text: ''
+
+
+        MDScreen:
+            name: 'resultati'

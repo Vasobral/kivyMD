@@ -1,0 +1,66 @@
+<Holst@Image>      #хз что но думаю надо
+
+<DSC>
+    size_hint_y:None  #тоже самое хз что но пусть будет
+    rows: 2
+    size_hint_x:1
+    height:self.minimum_height
+    padding: 20
+    spacing:10
+    elevation:0
+
+
+
+MDBoxLayout:
+    orientation:'vertical'
+    MDTopAppBar:
+        title:'Пятиугольник'
+        elevation:0
+        use_overflow:True
+        #это кнопки в топабаре, первое англ слово это навание иконки, далее что оно должно делать, а то что два раза на русском языке хз но поидеи вылезает название при наведении
+        right_action_items:[['brush', lambda x: app.switch_screen('main'),'Холст','Холст'],['cog', lambda x: app.switch_screen('settings'),'Настройки','Настройки'],['trash-can', lambda x: app.clear_canvas(),'Очистить','Очистить']]
+    MDScreenManager:
+        id:sm
+        MDScreen:                        #это нормально расстянутый холст на весь основной экран
+            name:"main"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                Holst:
+                    id:holst
+
+        MDScreen:                      #это начало экрана настроек
+            name:'settings'
+            MDScrollView:
+                MDList:
+                    OneLineAvatarIconListItem:  #эта хрень поидеи для нормального отображения двух виджетов слева и справа
+                        text:'Цветовая палитра'
+                        IconLeftWidget:       #виджет слева
+                            icon: 'palette'
+                        IconRightWidget:     #виджет слева
+                            id: color_btn
+                            icon:'select-color'
+                            on_press: app.show_dialog_color() #передаю логику кнопки из основного файла типо то что она будет делать при нажатии
+
+                    OneLineAvatarIconListItem:
+                        text:'Режим рисования'
+                        IconLeftWidget:
+                            icon:'draw'
+                        IRightContainer: #какой-то контейнер хз для чего просто скопировал из змейки
+                            MDCheckbox:  #свитч кнопка
+                                active: True if app.config.get('Pick','mode') == 'figure' else False #поидеи для того чтобы при каком режиме активна
+                                checkbox_icon_down: 'pentagon'  #тут просто если нажата то одна иконка
+                                checkbox_icon_normal: 'pencil'  #если не нажата то другая иконка
+                                on_active: app.switch_mode(self)  #логика кнопки из основного файла
+
+                    OneLineAvatarIconListItem: #тут всё тоже самое что и в цветовой палитре
+                        text:'Ластик'
+                        IconLeftWidget:
+                            icon:'bacteria-outline'
+                        IconRightWidget:
+                            id: eraser
+                            icon:'eraser'
+                            on_press: app.clear_line()
+
+
+

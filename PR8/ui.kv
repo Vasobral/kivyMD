@@ -1,0 +1,236 @@
+<DSC>
+    size_hint_y:None
+    rows: 2
+    size_hint_x:1
+    height:self.minimum_height
+    padding: 20
+    spacing:10
+    elevation:0
+
+<CSnackbar>:
+    MDIcon:
+        icon: root.icon
+        theme_text_color: 'Custom'
+        text_color: root.color
+        pos_hint:{'center_y':.5}
+
+    MDLabel:
+        text: root.text
+        theme_text_color: 'Custom'
+        text_color: [1,1,1,1]
+        pos_hint:{'center_y':.5}
+
+
+<Content>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        id:p_name
+        hint_text: "Ваше имя"
+        mode: 'rectangle'
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+
+<MD3Card>
+
+    padding: 4
+    size_hint: None, None
+    size: "220dp", "100dp"
+
+    MDRelativeLayout:
+
+        MDLabel:
+            id: label
+            text: root.text
+            adaptive_size: True
+            color: '#fafafa'
+            pos: "5dp", "12dp"
+            bold: True
+
+
+
+MDBoxLayout:
+    orientation:'vertical'
+    MDTopAppBar:
+        id:nav
+        title:'Главное меню'
+        elevation:0
+        use_overflow:True
+        right_action_items:[['home', lambda x: app.switch_screen('main'),'Главное меню','Главное меню'],['clipboard-edit-outline', lambda x: app.switch_screen('create'),'Создать анкету','Создать анкету'],['clipboard-list-outline', lambda x: app.switch_screen('check'),'Просмотр анкеты','Просмотр анкеты']]
+    MDScreenManager:
+        id:sm
+        MDScreen:
+            name:"main"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    size_hint:(.75,None)
+                    spacing:20
+                    MDRectangleFlatButton:
+                        text:'Создание анкеты'
+                        size_hint_x:1
+                        on_press:app.switch_screen('create')
+
+                    MDRectangleFlatButton
+                        text:'Просмотр анкеты'
+                        size_hint_x:1
+                        on_press:
+                            app.switch_screen('check')
+                            app.textcheck()
+
+        MDScreen:
+            name:'create'
+            MDAnchorLayout:
+                anchor_y:'top'
+
+                MDBoxLayout:
+                    spacing: 10
+                    orientation: 'vertical'
+
+                    padding: [100, 0, 100, 0]
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    MDTextField:
+                        id:t_sname
+                        hint_text: "Фамилия"
+                        mode: 'rectangle'
+                        size_hint_y: None
+
+                    MDTextField:
+                        id:t_name
+                        hint_text: "Имя"
+                        mode: 'rectangle'
+                        size_hint_y: None
+                    MDTextField:
+                        id:t_mname
+                        hint_text: "Отчество"
+                        mode: 'rectangle'
+                        size_hint_y: None
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        height: self.minimum_height
+                        padding: [0, -11, 0, 0]
+                        MDLabel:
+                            text:'Нету'
+                        MDCheckbox:
+                            id:loh
+                            size_hint: None, None
+                            size: "48dp", "48dp"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            on_active:
+                                app.netpapi()
+
+                    MDTextField:
+                        id:t_org
+                        hint_text: "Наименования организации"
+                        mode: 'rectangle'
+                        size_hint_y: None
+                    MDTextField:
+                        id:t_tov
+                        hint_text: "Наименование товара"
+                        mode: 'rectangle'
+                        size_hint_y: None
+                    MDTextField:
+                        id:t_opstov
+                        hint_text: "Описание товара"
+                        mode: 'rectangle'
+                        size_hint_y: None
+                    MDLabel:
+                        text:'Товар краденый'
+
+                    MDBoxLayout:
+                        size_hint: None, None
+                        height: self.minimum_height
+                        padding: [0, 11, 0, 0]
+                        MDLabel:
+                            text:'Да'
+                        MDLabel:
+                            text:'Нет'
+                    MDBoxLayout:
+                        padding: [-11, 11, 0, 0]
+                        Check:
+                            id: da
+                            active: True
+                            group: 'group'
+                            size_hint: None, None
+                            size: dp(48), dp(48)
+
+                            pos_hint: {'center_x': .4, 'center_y': .9}
+
+
+                        Check:
+                            id:net
+                            group: 'group'
+                            size_hint: None, None
+                            size: dp(48), dp(48)
+
+                            pos_hint: {'center_x': .6, 'center_y': .9}
+
+
+                    MDList:
+                        OneLineAvatarIconListItem:
+                            text:'Вид оплаты'
+                            IconLeftWidget:
+                                icon:'cash'
+                            IRightContainer:
+                                MDDropDownItem:
+                                    id:drop_hren
+                                    text: app.config.get('App','hren')
+                                    on_press:app.drop_hren.open()
+
+
+                    MDRoundFlatIconButton:
+                        pos_hint: {'right':1,'top':1,}
+                        text: 'Подтвердить'
+                        icon: 'pencil'
+                        on_press:
+                            app.textadd()
+
+
+        MDScreen:
+            name:'check'
+            MDAnchorLayout:
+                anchor_y:'top'
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    id: box
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    spacing:5
+                    padding:[15,50,20,0]
+                MDBoxLayout:
+                    orientation: "vertical"
+                    id: box2
+                    spacing:5
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    padding:[240,170,100,0]
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    id: box3
+                    spacing:5
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    padding:[15,290,20,0]
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    id: box4
+                    spacing:5
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    padding:[240,410,100,0]
+

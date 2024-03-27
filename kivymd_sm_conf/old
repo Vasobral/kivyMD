@@ -1,0 +1,74 @@
+        async def engine():
+            while self.game.status:
+                await sleep(1)
+                self.game.timer()
+                self.screen.ids.timer.title = self.game.time
+            self.game.stop()
+            self.screen.ids.timer.title = self.game.time
+
+        async def move_snake():
+            while self.game.status:
+                if not self.game.apple:
+                    self.game.apple = Apple()
+                    self.game.timer()
+                self.game.apple.refresh()
+                # Рисование яблока надо сделать
+                await sleep(self.game.snake.speed)
+                current = self.game.snake.body[0]
+                if not ((self.game.snake.movement) == 'right' and self.game.movement == 'left' or
+                        (self.game.snake.movement) == 'left' and self.game.movement == 'right' or
+                        (self.game.snake.movement) == 'up' and self.game.movement == 'down' or
+                        (self.game.snake.movement) == 'down' and self.game.movement == 'up'
+                ):
+                    self.game.snake.movement = self.game.movement
+                else:
+                    self.game.movement = self.game.snake.movement
+                match self.game.snake.movement:
+                    case 'up':
+                        current = [current[0], current[1] + 1]
+                    case 'down':
+                        current = [current[0], current[1] - 1]
+                    case 'left':
+                        current = [current[0] - 1, current[1]]
+                    case 'right':
+                        current = [current[0] + 1, current[1]]
+                autocannibalism = current in self.game.snake.body[:-1]
+                match self.game.mode:
+                    case 'easy':
+
+                        masochist = False
+                        if current[0] == 0:
+                            current[0] = self.game.size
+                        if current[1] == 0:
+                            current[1] = self.game.size
+                        if current[0] > self.game.size:
+                            current[0] = 1
+                        if current[1] > self.game.size:
+                            current[1] = 1
+                    case 'hard':
+                        masochist = current[0] > self.game.size or current[1] > self.game.size or current[0] < 1 or \
+                                    current[1] < 1
+
+                if self.game.apple.noun == self.game.snake.body[0]:
+                    self.game.apple = None
+                    self.game.snake.eat_apple += 1
+                    self.game.snake.speed -= 0.5 / (self.game.size * self.game.size) / 2 if self.game.snake.speed > 0.08 else 0
+                    eat = True
+                else:
+                    eat = False
+
+                if autocannibalism or masochist:
+                    self.game.stop()
+                    self.screen.ids.timer.icon='play'
+                    self.show_dialog_dead()
+                else:
+                    if not eat:
+                        self.change_holst([self.game.snake.body[-1:][0][0] - 1, self.game.snake.body[-1:][0][1] - 1],
+                                          [.8, .8, .8, 1])
+                        self.game.snake.body.remove(self.game.snake.body[-1:][0])
+
+                    self.game.snake.body.insert(0, current)
+                    self.change_holst([current[0] - 1, current[1] - 1], [1, 0, 0, 1])
+
+                print(
+                    f'Змея: body={self.game.snake.body}, move={self.game.snake.movement}, eat={self.game.snake.eat_apple}, apple={self.game.apple.noun if self.game.apple else None}')

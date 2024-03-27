@@ -1,0 +1,261 @@
+<DSC>
+    size_hint_y:None
+    rows: 2
+    size_hint_x:1
+    height:self.minimum_height
+    padding: 20
+    spacing:10
+    elevation:0
+
+
+<Content>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        id:p_name
+        hint_text: "Ваше имя"
+        mode: 'rectangle'
+
+
+
+
+
+
+
+
+MDBoxLayout:
+    orientation:'vertical'
+    MDTopAppBar:
+        title:'Главное меню'
+        elevation:0
+        use_overflow:True
+        right_action_items:[['home', lambda x: app.switch_screen('main'),'Главное меню','Главное меню'],['controller-classic', lambda x: app.switch_screen('game'),'Игра','Игра'],['cog', lambda x: app.switch_screen('settings'),'Настройки','Настройки'],['chart-timeline', lambda x: app.switch_screen('rate'),'Рейтинг','Рейтинг']]
+    MDScreenManager:
+        id:sm
+        MDScreen:
+            name:"main"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    size_hint:(.75,None)
+                    spacing:20
+                    MDRectangleFlatButton:
+                        text:'Новая игра'
+                        size_hint_x:1
+                        on_press:app.switch_screen('game')
+                        on_press:app.start()
+                    MDRectangleFlatButton
+                        text:'Рейтинг'
+                        size_hint_x:1
+                        on_press:app.switch_screen('rate')
+                    MDRectangleFlatButton
+                        text:'Настройки'
+                        size_hint_x:1
+                        on_press:app.switch_screen('settings')
+        MDScreen:
+            name:'settings'
+            MDScrollView:
+                MDList:
+                    OneLineAvatarIconListItem:
+                        text:'Сложность'
+                        IconLeftWidget:
+                            icon: 'brain'
+                        IconRightWidget:
+                            id:dif_btn
+                            icon:app.dif_start
+
+                            on_press:
+                                app.show_dialog_dif()
+
+
+        MDScreen:
+            name:'game'
+            MDBoxLayout:
+                orientation:'vertical'
+                MDBoxLayout:
+                    size_hint:1,None
+                    pos_hint: {'top':1}
+                    padding: [20,10, 20, 0]
+                    height: self.minimum_height
+                    MDLabel:
+                        text:f'Health points: {e_hp.value}'
+                        halign:'center'
+                        valign:'center'
+                    MDLabel:
+                        text:f'Stamina points: {e_sp.value}'
+                        halign:'center'
+                        valign:'center'
+                MDBoxLayout:
+                    size_hint:1,None
+                    pos_hint: {'top':1}
+                    padding: [20,10, 20, 5]
+                    height: self.minimum_height
+
+
+                    MDSlider:
+                        id:e_hp
+                        min: 0
+                        max: 30
+                        value: 25
+                        step:1
+                        color: [1,0,0,1]
+
+                    MDSlider:
+                        id:e_sp
+                        min: 0
+                        max: 8
+                        value: 4
+                        step:1
+                        color: [1,1,0,1]
+
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    padding: [125, 10, 125, 80]
+                    size_hint: 1, 1
+
+                    MDLabel:
+                        id:timer
+                        text:'00:00'
+                        halign: "center"
+
+                    MDScrollView:
+                        id:msg_scroll
+                        size_hint:1,1
+                        MDBoxLayout:
+                            id:msg_box
+                            orientation: 'vertical'
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            spacing:20
+                            padding:10
+
+                MDBoxLayout:
+                    size_hint:1,None
+                    pos_hint: {'bottom':1}
+                    padding: [20,0, 20, 15]
+                    height: self.minimum_height
+                    MDLabel:
+                        text:f'Health points: {p_hp.value}'
+                        halign:'center'
+                        valign:'center'
+                    MDLabel:
+                        text:f'Stamina points: {p_sp.value}'
+                        halign:'center'
+                        valign:'center'
+
+
+                MDBoxLayout:
+                    size_hint:1,None
+                    pos_hint: {'bottom':1}
+                    padding: [20,0, 20, 10]
+                    height: self.minimum_height
+                    MDSlider:
+                        id:p_hp
+                        min: 0
+                        max: 25
+                        value: 25
+                        step:1
+                        color: [1,0,0,1]
+
+                    MDSlider:
+                        id:p_sp
+                        min: 0
+                        max: 8
+                        value: 4
+                        step:1
+                        color: [1,1,0,1]
+
+                MDAnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'bottom'
+                    size_hint:None, None
+                    height:85
+                    MDBoxLayout:
+                        size_hint:1,None
+                        pos_hint: {'bottom':1}
+                        spacing:10
+                        padding: [130,0, 20,15]
+                        height: self.minimum_height
+                        MDFillRoundFlatIconButton:
+                            id:b_atak
+                            text:'Атака'
+                            icon:'sickle'
+                            disabled: False
+                            on_press:
+                                app.combat(1)
+
+                        MDFillRoundFlatIconButton:
+                            id:b_patak
+                            text:'Силовая атака'
+                            icon:'nuke'
+                            disabled: False
+                            on_press:
+                                app.combat(2)
+                        MDFillRoundFlatIconButton:
+                            id:b_adef
+                            text:'Пробить защиту'
+                            icon:'shield-off'
+                            disabled: False
+                            on_press:
+                                app.combat(4)
+                        MDFillRoundFlatIconButton:
+                            id:b_def
+                            text:'Защита'
+                            icon:'shield-cross'
+                            disabled: False
+                            on_press:
+                                app.combat(3)
+
+        MDScreen:
+            name:'rate'
+            MDBoxLayout:
+                orientation:'vertical'
+                MDBoxLayout:
+                    padding: [20, 95, 20, 20]
+                    spacing: 10
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    height: self.minimum_height
+                    MDBoxLayout:
+                        id: lt_table_chat
+
+#        MDNavigationDrawer:
+#            id: nav
+#            radius: [0,0,0,0]
+#            MDNavigationDrawerMenu:
+#                MDNavigationDrawerHeader:
+#                    title:'Игра'
+#                    text: '100% без багов'
+#                MDNavigationDrawerDivider:
+#                MDNavigationDrawerItem:
+#                    icon: 'account-cog'
+#                    text: 'Играть'
+#                    on_press:
+#                        sm.current = 'game'
+#                        nav.set_state('close')
+#                MDNavigationDrawerItem:
+#                    icon: 'forum'
+#                    text: 'Рейтинг'
+#                    on_press:
+#                        sm.current = 'rate'
+#                        nav.set_state('close')
+#
+#                MDNavigationDrawerItem:
+#                    icon: 'cog'
+#                    text: 'Настройки'
+#                    on_press:
+#                        sm.current = 'settings'
+#                        nav.set_state('close')
+#
+#                MDNavigationDrawerItem:
+#                    icon: 'logout'
+#                    text:'Главное меню'
+#                    on_press:
+#                        sm.current = 'main'
+#                        nav.set_state('close')

@@ -1,0 +1,133 @@
+<Pole@MDGridLayout>
+
+
+MDScreenManager:
+    id:sm
+    MDScreen:
+        name:"main"
+        MDAnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            MDBoxLayout:
+                orientation:'vertical'
+                size_hint:(.75,None)
+                spacing:20
+                MDBoxLayout:
+                    padding:[50,0,0,0]
+                    MDLabel:
+                        text:'Рекорд'
+                    MDLabel:
+                        id:m_rec
+                        text:app.config.get("Top","rec")
+                MDRectangleFlatButton:
+                    text:'Новая игра'
+                    size_hint_x:1
+                    on_press:app.switch_screen("game")
+    MDScreen:
+        name:'game'
+        MDBoxLayout:
+            orientation:"vertical"
+            MDTopAppBar:
+                title:"Пятнашки"
+            MDBoxLayout:
+                orientation:"vertical"
+                MDBoxLayout:
+                    padding:[150,0,0,0]
+                    MDLabel:
+                        id:timer
+                        text:'00:00'
+
+                AnchorLayout:
+                    anchor_y:"center"
+                    anchor_x:"center"
+                    padding:[0,0,0,40]
+
+
+                    Pole:
+                        padding:50
+                        size_hint_y:None
+                        size_hint_x:None
+                        width:root.width
+                        height:self.width
+                        cols:4
+                        rows:4
+
+                        MDRectangleFlatIconButton:
+                            id:m0
+                            size_hint:[1,1]
+                            text:"1"
+                        MDRectangleFlatIconButton:
+                            id:m1
+                            size_hint:[1,1]
+                            text:"2"
+                        MDRectangleFlatIconButton:
+                            id:m2
+                            size_hint:[1,1]
+                            text:"3"
+                        MDRectangleFlatIconButton:
+                            id:m3
+                            size_hint:[1,1]
+                            text:"4"
+                        MDRectangleFlatIconButton:
+                            id:m4
+                            size_hint:[1,1]
+                            text:"5"
+                        MDRectangleFlatIconButton:
+                            id:m5
+                            size_hint:[1,1]
+                            text:"6"
+                        MDRectangleFlatIconButton:
+                            id:m6
+                            size_hint:[1,1]
+                            text:"7"
+                        MDRectangleFlatIconButton:
+                            id:m7
+                            size_hint:[1,1]
+                            text:"8"
+                        MDRectangleFlatIconButton:
+                            id:m8
+                            size_hint:[1,1]
+                            text:"9"
+                        MDRectangleFlatIconButton:
+                            id:m9
+                            size_hint:[1,1]
+                            text:"10"
+                        MDRectangleFlatIconButton:
+                            id:m10
+                            size_hint:[1,1]
+                            text:"11"
+                        MDRectangleFlatIconButton:
+                            id:m11
+                            size_hint:[1,1]
+                            text:"12"
+                        MDRectangleFlatIconButton:
+                            id:m12
+                            size_hint:[1,1]
+                            text:"13"
+                        MDRectangleFlatIconButton:
+                            id:m13
+                            size_hint:[1,1]
+                            text:"14"
+                        MDRectangleFlatIconButton:
+                            id:m14
+                            size_hint:[1,1]
+                            text:"15"
+                        MDRectangleFlatIconButton:
+                            id:m15
+                            size_hint:[1,1]
+                            text:""
+    MDScreen:
+        name:'result'
+        MDBoxLayout:
+            orientation:"vertical"
+            MDBoxLayout:
+                height:self.minimum_height
+                padding:[60,0,0,0]
+                MDLabel:
+                    text:"Результат"
+                MDLabel:
+                    id:r_time
+                    text:""
+                MDRectangleFlatButton:
+                    text:"В главное меню"
+                    on_press:app.switch_screen("main")

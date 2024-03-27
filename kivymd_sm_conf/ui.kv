@@ -1,0 +1,121 @@
+#<Holst@Image>
+<DSC>
+    size_hint_y:None
+    rows: 2
+    size_hint_x:1
+    height:self.minimum_height
+    padding: 20
+    spacing:10
+    elevation:0
+
+
+MDBoxLayout:
+    orientation:'vertical'
+    MDTopAppBar:
+        title:'Главное меню'
+        elevation:0
+        use_overflow:True
+        right_action_items:[['home', lambda x: app.switch_screen('main'),'Главное меню','Главное меню'],['snake', lambda x: app.switch_screen('game'),'Игра','Игра'],['cog', lambda x: app.switch_screen('settings'),'Настройки','Настройки']]
+    MDScreenManager:
+        id:sm
+
+        MDScreen:
+            name:"main"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    size_hint:(.75,None)
+                    spacing:20
+                    MDRectangleFlatButton:
+                        text:'Игра'
+                        size_hint_x:1
+                        on_press:app.switch_screen('game')
+                    MDRectangleFlatButton
+                        text:'Настройки'
+                        size_hint_x:1
+                        on_press:app.switch_screen('settings')
+                    MDRectangleFlatButton
+                        text:'Выход'
+                        size_hint_x:1
+                        on_press:app.stop()
+        MDScreen:
+            name:'settings'
+            MDScrollView:
+                MDList:
+                    OneLineAvatarIconListItem:
+                        text: 'Темная тема'
+                        IconLeftWidget:
+                            icon: 'theme-light-dark'
+                        IRightContainer:
+                            MDCheckbox:
+                                active: True if app.theme_cls.theme_style == 'Dark' else False
+                                checkbox_icon_down:'weather-night'
+                                checkbox_icon_normal:'weather-sunny'
+                                color_inactive: app.theme_cls.accent_color
+                                on_active: app.switch_theme(self)
+                    OneLineAvatarIconListItem:
+                        text:'Цветовая палитра'
+                        IconLeftWidget:
+                            icon:'palette'
+                        IRightContainer:
+                            MDDropDownItem:
+                                id:drop_palette
+                                text: app.theme_cls.primary_palette
+                                on_press:app.drop_palette.open()
+                    OneLineAvatarIconListItem:
+                        text:'Сложность игры'
+                        IconLeftWidget:
+                            icon:'sheep'
+                        IRightContainer:
+                            MDCheckbox:
+                                active: True if app.config.get('Game','mode') == 'hard' else False
+                                checkbox_icon_down: 'skull'
+                                checkbox_icon_normal: 'sleep'
+                                color_inactive: app.theme_cls.accent_color
+                                on_active: app.switch_mode(self)
+                    OneLineAvatarIconListItem:
+                        text:'Размер поля'
+                        IconLeftWidget:
+                            icon: 'resize'
+                        IconRightWidget:
+                            id:size_btn
+                            icon:app.size_start
+
+                            on_press: app.show_dialog_size()
+
+        MDScreen:
+            name:'game'
+            on_enter:
+                if holst.width > holst.height: width = holst.height
+                else: width = holst.width
+                holst.size_hint = [None,None]
+                holst.size = [width,width]
+            MDBoxLayout:
+                orientation:'vertical'
+                MDBoxLayout:
+                    padding:20
+                    MDFloatLayout:
+                        Holst:
+                            id:holst
+                            pos_hint:{'center_x': .5, 'center_y': .5}
+
+
+                MDBottomAppBar:
+                    MDTopAppBar:
+                        id:timer
+                        title:'00:00'
+                        icon:'play'
+                        type:'bottom'
+                        mode:'end'
+                        elevation:0
+                        on_action_button: app.engine()
+
+
+
+
+
+
+
+

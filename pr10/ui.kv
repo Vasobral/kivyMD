@@ -1,0 +1,93 @@
+<SwipeToDeleteItem>:
+    size_hint_y:None
+    height: content.height
+
+    MDCardSwipeLayerBox:
+        padding: "8px"
+
+        MDIconButton:
+            icon:'trash-can'
+            pos_hint:{"center_y": .5}
+            on_release:
+                app.remove_item(root)
+
+        MDIconButton:
+            icon:'pen'
+            pos_hint:{"center_y": .5}
+            on_release:
+                app.show_dialog_two(root)
+                app.hren(root)
+
+    MDCardSwipeFrontBox:
+        OneLineListItem:
+            id:content
+            text:root.text
+            _no_ripple_effect:True
+
+<CSnackbar>:
+    MDIcon:
+        icon: root.icon
+        theme_text_color: 'Custom'
+        text_color: root.color
+        pos_hint:{'center_y':.5}
+
+    MDLabel:
+        text: root.text
+        theme_text_color: 'Custom'
+        text_color: [1,1,1,1]
+        pos_hint:{'center_y':.5}
+
+
+<Content>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        id:p_name
+        hint_text: "Название заметки"
+        mode: 'rectangle'
+
+    MDTextField:
+        id:p_text
+        hint_text: "Текст заметки"
+        mode: 'rectangle'
+
+
+MDScreen:
+    MDBoxLayout:
+        MDNavigationRail:
+            MDNavigationRailItem:
+                text:''
+                icon:'git'
+
+
+            MDNavigationRailItem:
+                text:'Обновить'
+                icon:'database-refresh-outline'
+                on_press:
+                    app.refresh()
+
+            MDNavigationRailItem:
+                text:'Добавить'
+                icon:'note-plus-outline'
+                on_press:
+                    app.show_dialog_one()
+
+            MDNavigationRailItem:
+                text:'Выход'
+                icon:'exit-run'
+                on_press: app.stop()
+
+        MDBoxLayout:
+            orientation:'vertical'
+
+            MDTopAppBar:
+                elevation:4
+                title:'Ежедневник'
+            MDScrollView:
+                MDList:
+                    id: md_list
+                    padding: 0
+
