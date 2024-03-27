@@ -1,0 +1,35 @@
+MDBoxLayout:
+    orientation:'vertical'
+    MDScreenManager:
+        id:sm #если нужен только экран то верхние три строчки не нужны
+        MDScreen:
+            name:"main"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    size_hint:(.75,None)
+                    spacing:20
+                    MDRectangleFlatButton:
+                        text:'Переход на другое окно'
+                        size_hint_x:1
+                        on_press:app.switch_screen('game')
+                    MDRectangleFlatButton
+                        text:'Выход'
+                        size_hint_x:1
+                        on_press:app.stop()
+
+        MDScreen:
+            name:"game"
+            MDAnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    size_hint:(.75,None)
+                    spacing:20
+                    MDRectangleFlatButton
+                        text:'Выход'
+                        size_hint_x:1
+                        on_press:app.stop()
